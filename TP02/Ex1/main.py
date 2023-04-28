@@ -13,7 +13,7 @@ from chardet.universaldetector import UniversalDetector
 from unidecode import unidecode
 
 # Parte 1
-
+# PRONTO
 def read_files(path_name: str) -> "list[str]":
     base_dir = Path(__file__).resolve().parent
     detector = UniversalDetector()
@@ -39,9 +39,10 @@ def read_files(path_name: str) -> "list[str]":
 def gen_vocabulary(files: "list[str]"):
     interim_array = []    
     
-    for sentence in files[0]:
-        aux = sentence.replace('\n',' ').split(' ')
-        interim_array.extend([unidecode(i).lower().translate(str.maketrans('','',string.punctuation)) for i in aux])
+    for file in files:
+        for sentence in file:
+            aux = sentence.replace('\n',' ').split(' ')
+            interim_array.extend([unidecode(i).lower().translate(str.maketrans('','',string.punctuation)) for i in aux])
         
     final_vector = sorted(set(interim_array))
     
@@ -67,32 +68,41 @@ def gen_bag_of_words(vocab_filename: 'str'):
     
     for word in vocab:
         norm_vocab.append(word.replace('\n',''))
-    # pprint(norm_vocab)
     
     files = read_files('data')
     interim_array = []
-    for sentence in files[0]:
-        aux = sentence.replace('\n',' ').split(' ')
-        interim_array.extend([unidecode(i).lower().translate(str.maketrans('','',string.punctuation)) for i in aux])
-        
-    bag_of_words= []
-    temp_dict = {}
     
-    for word in norm_vocab:
-        for i in interim_array:
-            if word == i:
-                temp_dict[word] = 1
-                break
-            else:
-                temp_dict[word] = 0
+    concat_phrases = []
+    for file in files:
+        concat_phrases.append([''.join(file)])
                 
-    # pprint(temp_dict)
+    for file in concat_phrases:
+        for sentence in file:
+            aux = sentence.replace('\n',' ').split(' ')
+            interim_array.append([unidecode(i).lower().translate(str.maketrans('','',string.punctuation)) for i in aux])
+
+    bag_of_words= []    
+    for file in interim_array:
+        temp_dict = {}
+        for word in norm_vocab:
+            for i in file:
+                print("palavra no arquivo",i)
+                print("palavra no vocabulario",word)
+                if word == i:
+                    temp_dict[word] = 1
+                    break
+                else:
+                    temp_dict[word] = 0
+        bag_of_words.append(temp_dict)
+    return bag_of_words
         
     
 if __name__ == "__main__":
-    texts = read_files('data')
-    vocabulary = gen_vocabulary(texts)
-    # pprint(vocabulary[0:49])
+    # texts = read_files('data')
+    # print(texts)
+    # vocabulary = gen_vocabulary(texts)
+    # pprint(vocabulary)
     # print('Tamanho da lista',len(vocabulary))
     # create_vocab_file(vocabulary)
-    gen_bag_of_words('vocabulario.txt')
+    pprint(gen_bag_of_words('vocabulario.txt'))
+    # gen_bag_of_words('vocabulario.txt')
