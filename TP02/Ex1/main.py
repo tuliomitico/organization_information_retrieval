@@ -30,12 +30,12 @@ def read_files(path_name: str) -> "list[str]":
             detector.close()    
             file = open(file_name,"r",encoding=detector.result['encoding'])
             texts.append(file.readlines())
-        file.close()
+            file.close()
     return texts
     
 
 # Parte 2
-
+# PRONTO
 def gen_vocabulary(files: "list[str]"):
     interim_array = []    
     
@@ -51,14 +51,14 @@ def gen_vocabulary(files: "list[str]"):
     return final_vector
 
 # Parte 3
-
+# PRONTO
 def create_vocab_file(vocabulary: "list[str]") -> None:
     with open('vocabulario.txt','w',encoding='utf-8') as file:
         for word in vocabulary:
             file.write(word + '\n')
             
 # Parte 4
-
+# PRONTO
 def gen_bag_of_words(vocab_filename: 'str'):            
     path = Path(__file__).resolve().parent
     vocab_file = open(path / vocab_filename,'r',encoding='utf-8')
@@ -86,8 +86,6 @@ def gen_bag_of_words(vocab_filename: 'str'):
         temp_dict = {}
         for word in norm_vocab:
             for i in file:
-                print("palavra no arquivo",i)
-                print("palavra no vocabulario",word)
                 if word == i:
                     temp_dict[word] = 1
                     break
@@ -98,11 +96,7 @@ def gen_bag_of_words(vocab_filename: 'str'):
         
     
 if __name__ == "__main__":
-    # texts = read_files('data')
-    # print(texts)
-    # vocabulary = gen_vocabulary(texts)
-    # pprint(vocabulary)
-    # print('Tamanho da lista',len(vocabulary))
-    # create_vocab_file(vocabulary)
+    texts = read_files('data')
+    vocabulary = gen_vocabulary(texts)
+    create_vocab_file(vocabulary)
     pprint(gen_bag_of_words('vocabulario.txt'))
-    # gen_bag_of_words('vocabulario.txt')
