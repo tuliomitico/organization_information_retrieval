@@ -5,9 +5,13 @@ Created on Fri Apr 28 11:22:24 2023
 
 @author: tulio
 """
-import sys 
-sys.path.append('/home/tulio/Documents/UFU/ORI/organization_information_retrieval/TP02')
-print(sys.path)
+import sys
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent 
+
+sys.path.append(str(BASE_DIR))
+
 import typing as t
 import string
 
@@ -16,22 +20,17 @@ from IPython.display import display
 
 from Ex1.main import read_files 
 
-
 def tf_idf(read_vocab, file_path) -> t.NoReturn:
-    files = read_files(file_path)
+    concat_phrases = []
+    interim_array = []
     norm_vocab = []
+    tf = {}
+    files = read_files(file_path)
     
     # Achata o arquivo de vocabulario para vetor
     for word in read_vocab:
         norm_vocab.append(word.replace('\n',''))
-        
-    tf = {}
     
-    display(norm_vocab)
-    
-    interim_array = []
-    
-    concat_phrases = []
     for file in files:
         concat_phrases.append([''.join(file)])
                 
@@ -44,16 +43,12 @@ def tf_idf(read_vocab, file_path) -> t.NoReturn:
     
     for word in norm_vocab:
         tf[word] = 0
-    for i in file:
-        print(i)
-        if i in norm_vocab:
-            tf[word] += 1
-            break
+    for w in file:
+        print(w)
+        if w in norm_vocab:
+            tf[w] += 1
     display(tf)
             
-            
-        
-    
 if __name__=="__main__":
     f = open('../Ex1/vocabulario.txt')
     file = f.readlines()
