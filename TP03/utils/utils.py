@@ -77,8 +77,8 @@ def tf_idf(vocab, files) -> t.NoReturn:
                 
     for name,file in concat_phrases.items():
         for sentence in file:
-            aux = sentence.replace('\n',' ').split(' ')
-            interim_array[name] = [unidecode(i).lower().translate(str.maketrans('','',string.punctuation)) for i in aux]
+            aux = remove_diacritics(sentence.replace('\n',' ').split(' '))
+            interim_array[name] = aux
     
     len_collection = len(interim_array.values())
     
