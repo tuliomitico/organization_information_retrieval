@@ -27,10 +27,6 @@ from utils import (
 
 BASE_DIR = Path(__file__).resolve().parent
 
-# Create a function calculate_similarity that takes three arguments: vocabulario, docs_dir and query. 
-# It should print the similarity between the query and the documents sorted by similarity. 
-# The documents should be sorted in descending order by similarity.
-
 def calcular_similaridade(vocabulario, docs_dir, query):
     
     query_tf = tf_query(vocabulario, query)
