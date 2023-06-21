@@ -2,14 +2,15 @@
 import nltk
 import re
 import pandas as pd
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from sklearn import metrics
 from sklearn.model_selection import cross_val_predict
 
 
 
-dataset = pd.read_csv(r"C:\Users\gustavoborges\Arquivos Local\Pessoal\ufu\ORI\TP-4\Tweets_Mg.csv",encoding='utf-8')
+#dataset = pd.read_csv(r"C:\Users\gustavoborges\Arquivos Local\Pessoal\ufu\ORI\TP-4\Tweets_Mg.csv",encoding='utf-8')
+dataset = pd.read_csv(r"/home/tulio/Documents/UFU/ORI/Tweets_Mg.csv",encoding='UTF-8')
 
 dataset.head()
 
@@ -28,7 +29,7 @@ dataset[dataset.Classificacao=='Negativo'].count()
 tweets = dataset['Text'].values
 classes = dataset['Classificacao'].values
 
-vectorizer = CountVectorizer(analyzer="word")
+vectorizer = TfidfVectorizer(analyzer="word")
 freq_tweets = vectorizer.fit_transform(tweets)
 
 modelo = MultinomialNB()
@@ -62,7 +63,7 @@ print (pd.crosstab(classes, resultados, rownames=['Real'], colnames=['Predito'],
 
 print('\n<><><><><><><> ngram_range(1,2) <><><><><><><>\n')
 
-vectorizer = CountVectorizer(ngram_range=(1,2))
+vectorizer = TfidfVectorizer(ngram_range=(1,2))
 freq_tweets = vectorizer.fit_transform(tweets)
 modelo = MultinomialNB()
 modelo.fit(freq_tweets,classes)
@@ -76,7 +77,7 @@ print (pd.crosstab(classes, resultados, rownames=['Real'], colnames=['Predito'],
 
 print('\n<><><><><><><> ngram_range(2,2) <><><><><><><>\n')
 
-vectorizer = CountVectorizer(ngram_range=(2,2))
+vectorizer = TfidfVectorizer(ngram_range=(2,2))
 freq_tweets = vectorizer.fit_transform(tweets)
 modelo = MultinomialNB()
 modelo.fit(freq_tweets,classes)
